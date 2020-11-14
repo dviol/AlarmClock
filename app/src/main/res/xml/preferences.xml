@@ -15,7 +15,19 @@
 
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:title="@string/settings">
+    <androidx.preference.PreferenceCategory
+        android:title="Password for Passwordprotected Alarms"
+        app:iconSpaceReserved="false">
+
+        <androidx.preference.EditTextPreference
+            android:defaultValue="1234"
+            android:dialogTitle="Set Password"
+            android:summary="Click here to change the password"
+            android:key="set_password"
+            />
+    </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory
         android:key="preference_category_sound_key"
         android:title="@string/preference_category_sound"
@@ -118,4 +130,5 @@
             android:title="@string/auto_silence_title"
             app:iconSpaceReserved="false" />
     </androidx.preference.PreferenceCategory>
+
 </androidx.preference.PreferenceScreen>
