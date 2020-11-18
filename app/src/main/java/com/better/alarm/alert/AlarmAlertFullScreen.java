@@ -150,6 +150,7 @@ public class AlarmAlertFullScreen extends FragmentActivity {
     }
 
     private void updateLayout() {
+
         LayoutInflater inflater = LayoutInflater.from(this);
         //Boolean password_protected = R.id.use_password_checkbox;
         setContentView(inflater.inflate(getLayoutResId(true), null)); //TODO Implement Layout change to alert_fullscreen_locked if password protection is used in specific alarm
@@ -158,6 +159,10 @@ public class AlarmAlertFullScreen extends FragmentActivity {
          * snooze behavior: pop a snooze confirmation view, kick alarm manager.
          */
         final Button snooze = (Button) findViewById(R.id.alert_button_snooze);
+
+
+
+
         snooze.requestFocus();
         snooze.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -198,10 +203,12 @@ public class AlarmAlertFullScreen extends FragmentActivity {
         dismissButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (longClickToDismiss) {
+                snooze.setText(((EditText)findViewById(R.id.editTextTextPassword)).getText());
+                if (longClickToDismiss && false) { //TODO Reenable Longclick
                     dismissButton.setText(getString(R.string.alarm_alert_hold_the_button_text));
                 } else {
-                    if(InjectKt.globalInject(Prefs.class).getValue().getPassword().equals(((EditText)findViewById(R.id.editTextTextPassword)).getText())){
+                    if(InjectKt.globalInject(Prefs.class).getValue().getPassword().getValue().equals(((EditText)findViewById(R.id.editTextTextPassword)).getText().toString())){
+
                         dismiss();
                     }else{
                         //Toast.makeText("Wrong Password!",                               this,                                2).show();
@@ -215,7 +222,10 @@ public class AlarmAlertFullScreen extends FragmentActivity {
         dismissButton.setOnLongClickListener(new Button.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if(InjectKt.globalInject(Prefs.class).getValue().getPassword().equals(((EditText)findViewById(R.id.editTextTextPassword)).getText())){
+                //snooze.setText(((EditText)findViewById(R.id.editTextTextPassword)).getText());
+                String password_saved = InjectKt.globalInject(Prefs.class).getValue().getPassword().getValue();
+                String password_is = ((EditText)findViewById(R.id.editTextTextPassword)).getText().toString();
+                if(password_saved.equals(password_is)){
                 dismiss();}
                 return true;
             }
