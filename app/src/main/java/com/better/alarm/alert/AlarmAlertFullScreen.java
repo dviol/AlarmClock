@@ -27,7 +27,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 
@@ -134,8 +136,13 @@ public class AlarmAlertFullScreen extends FragmentActivity {
         textView.setText(titleText);
     }
 
-    protected int getLayoutResId() {
-        return R.layout.alert_fullscreen;
+    protected int getLayoutResId(Boolean password_protected) {
+        if(password_protected == true){
+            return R.layout.alert_fullscreen_locked;
+        }else{
+            return R.layout.alert_fullscreen;
+        }
+
     }
 
     protected String getClassName() {
@@ -144,8 +151,8 @@ public class AlarmAlertFullScreen extends FragmentActivity {
 
     private void updateLayout() {
         LayoutInflater inflater = LayoutInflater.from(this);
-
-        setContentView(inflater.inflate(getLayoutResId(), null));
+        //Boolean password_protected = R.id.use_password_checkbox;
+        setContentView(inflater.inflate(getLayoutResId(true), null)); //TODO Implement Layout change to alert_fullscreen_locked if password protection is used in specific alarm
 
         /*
          * snooze behavior: pop a snooze confirmation view, kick alarm manager.
@@ -194,7 +201,13 @@ public class AlarmAlertFullScreen extends FragmentActivity {
                 if (longClickToDismiss) {
                     dismissButton.setText(getString(R.string.alarm_alert_hold_the_button_text));
                 } else {
-                    dismiss();
+                    if(InjectKt.globalInject(Prefs.class).getValue().getPassword().equals(((EditText)findViewById(R.id.editTextTextPassword)).getText())){
+                        dismiss();
+                    }else{
+                        //Toast.makeText("Wrong Password!",                               this,                                2).show();
+
+                    }
+
                 }
             }
         });
@@ -202,7 +215,8 @@ public class AlarmAlertFullScreen extends FragmentActivity {
         dismissButton.setOnLongClickListener(new Button.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                dismiss();
+                if(InjectKt.globalInject(Prefs.class).getValue().getPassword().equals(((EditText)findViewById(R.id.editTextTextPassword)).getText())){
+                dismiss();}
                 return true;
             }
         });

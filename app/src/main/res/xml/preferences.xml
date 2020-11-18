@@ -25,7 +25,7 @@
             android:defaultValue="1234"
             android:dialogTitle="Set Password"
             android:summary="Click here to change the password"
-            android:key="set_password"
+            android:key="password_alarm"
             />
     </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory
